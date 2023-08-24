@@ -4,6 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
-  <body></body>
+  <body>
+    <ol>
+      <app1-comp></app1-comp>
+    </ol>
+    <div id="app">{{ message }}</div>
+    <div id="app-2">
+      <!-- 
+        '디렉티브' : Vue에서 제공하는 특수 속성임을 나타내며, 
+        'v-' 접두어가 붙어있을 시 렌더링 된 DOM에 특수한 반응형 동작.  
+        'title' 속성을 Vue 인스턴스의 'message' 속성으로 최신 상태를 유지한다.
+      -->
+      <span v-bind:title="message">
+        내 위에 잠시 마우스를 올리면 동적으로 바인딩 된 title을 볼 수 있습니다!
+      </span>
+    </div>
+
+    <div id="app-3">
+      <!-- 텍스트와 속성뿐 아니라 DOM의 구조에도 데이터를 바인딩 할 수 있다. -->
+      <!-- Vue 엘리먼트가 Vue에 삽입/업데이트/제거될 때 자동으로 트랜지션 효과를 적용할 수 있다. -->
+      <p v-if="seen">이제 나를 볼 수 있어요</p>
+    </div>
+
+    <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">{{ todo.text }}</li>
+      </ol>
+    </div>
+
+    <div id="app-5">
+      <button
+        v-on:click="onToggle"
+        v-bind:style="{ 
+          color: isReverse ? 'black' : 'gray', 
+          backgroundColor: '#fff', 
+          border: '1px solid #000', 
+          padding: '5px 20px', 
+          borderRadius: '5px' 
+        }"
+      >
+        화면 잠금
+      </button>
+      <p>{{ message }}</p>
+      <button
+        v-on:click="reverseMessage"
+        v-bind:style="{ 
+          color: isReverse ? 'gray' : 'black', backgroundColor: '#fff', 
+          border: '1px solid #000', 
+          padding: '5px 20px', 
+          borderRadius: '5px'  
+        }"
+      >
+        메시지 뒤집기
+      </button>
+    </div>
+
+    <div id="app-6">
+      <p>{{ message }}</p>
+      <input v-model="message" />
+      <button v-on:click="handleSubmit">전송</button>
+    </div>
+
+    <script src="./step-1.js"></script>
+  </body>
 </html>
