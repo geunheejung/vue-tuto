@@ -63,3 +63,37 @@ var app6 = new Vue({
     },
   },
 });
+
+// 'v-bind' 를 사용하여 각각의 반복되는 'todo-item' 컴포넌트에 전달할 수 있다.
+// Vue.component("todo-item", {
+//   props: ["todo"],
+//   template: "<li>{{ todo.text }}</li>",
+// });
+
+var groceryList = [
+  "Vegetables",
+  "Cheese",
+  "Whatever else humans are supposed to eat",
+].map((item, index) => ({
+  id: index,
+  text: item,
+  isCompleted: false,
+}));
+
+var app7 = new Vue({
+  el: "#app-7",
+  components: {
+    "todo-item": {
+      props: ["todo"],
+      template: "<li v-on:click='click(todo.id)'>{{ todo.text }}</li>",
+      methods: {
+        click: function (todoId) {
+          groceryList[todoId].isCompleted = !groceryList[todoId].isCompleted;
+        },
+      },
+    },
+  },
+  data: {
+    groceryList,
+  },
+});

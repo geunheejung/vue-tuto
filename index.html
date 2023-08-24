@@ -67,6 +67,21 @@
       <button v-on:click="handleSubmit">전송</button>
     </div>
 
+    <div id="app-7">
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+          v-bind:style="{ 
+            cursor: 'pointer',
+            userSelect: 'none',
+            textDecoration: item.isCompleted ? 'line-through' : 'none' 
+          }"
+        ></todo-item>
+      </ol>
+    </div>
+
     <script src="./step-1.js"></script>
   </body>
 </html>
