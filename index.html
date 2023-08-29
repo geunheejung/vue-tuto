@@ -84,7 +84,42 @@
 
     <div id="app-8">
       <p>{{ a }}</p>
+      <!-- v-once 디렉티브 사용 시 엘리먼트 내의 값들은 일회성 보간으로 사용된다. -->
+      <p v-once>v-once -> {{ b }}, {{ a }}</p>
+      <div>
+        <!-- 이중 중괄호는 HTML이 아닌 일반 텍스트로 데이터를 해석한다. 실제 HTML을 출력하려면 v-html 디렉티브 -->
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+      </div>
       <button v-on:click="a += 1">Change it</button>
+      <button v-on:click="b += 1">Change it</button>
+
+      <div v-bind:id="dynamicId">
+        Hello
+        <!-- isButtonDisabled 가 falsy 한 값을 가질 경우 disabled 속성 자체가 포함되지 않음-->
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <button v-bind:id="dynamicId.split('').reverse().join('')">
+          {{ "button".toUpperCase() }}
+        </button>
+      </div>
+
+      {{ a + 1 }} {{ isButtonDisabled ? 'YES' : 'NO' }} {{
+      dynamicId.split('').reverse().join('') }}
+
+      <!-- 디렉티브 속성 값은 단일 JavaScript 표현식이 된다. -->
+      <p v-if="true">v-if</p>
+      <!-- href는 전달인자로, 엘리먼트의 href 속성을 표현식 url의 값에 바인드하는 v-bind 디렉티브에게 알려준다. -->
+      <a v-bind:href="url ? 'http://' + url : ''" @click="handleClick">link</a>
+      <input type="text" v-model="url" />
+
+      <a v-bind:[attrname]="url">attr link</a>
+
+      <form v-on:submit.prevent="onSubmit">
+        <label for="id">id</label>
+        <input type="text" name="id" />
+
+        <input type="submit" />
+      </form>
     </div>
 
     <script src="./step-1.js"></script>

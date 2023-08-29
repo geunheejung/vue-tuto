@@ -101,11 +101,24 @@ var app7 = new Vue({
 const data = {
   a: 1,
   b: 2,
+  rawHtml: "<span style='color: red'>red</span>",
+  dynamicId: "wrapper",
+  isButtonDisabled: true,
+  url: "",
+  attrname: "href",
 };
 
 const vm = new Vue({
   el: "#app-8",
   data: data,
+  methods: {
+    handleClick: function () {
+      alert(`${window.location.href} -> ${this.url}`);
+    },
+    onSubmit: function (event) {
+      console.log("submit", event);
+    },
+  },
   created: function () {
     // this는 vm 인스턴스
     console.log(`a is: ${this.a}`);
