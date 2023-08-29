@@ -97,3 +97,29 @@ var app7 = new Vue({
     groceryList,
   },
 });
+
+const data = {
+  a: 1,
+  b: 2,
+};
+
+const vm = new Vue({
+  el: "#app-8",
+  data: data,
+  created: function () {
+    // this는 vm 인스턴스
+    console.log(`a is: ${this.a}`);
+  },
+});
+
+console.log("vm.$data === data ->", vm.$data === data);
+console.log(
+  `vm.$el === document.getElementById('app-8'), ${
+    vm.$el === document.getElementById("app-8")
+  }`
+);
+vm.$watch("a", function (newVal, oldVal) {
+  // vm.a 가 변경되면 호출된다.
+
+  alert(`changed ${oldVal} -> ${newVal}`);
+});
