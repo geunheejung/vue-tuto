@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <my-component>Hello</my-component>
+      <child-component></child-component>
+      <table>
+        <tr
+          is="my-row"
+          v-for="todo in todoList"
+          v-bind:todo="todo"
+          v-bind:key="todo.id"
+          v-bind:title="title"
+        ></tr>
+      </table>
+    </div>
+    <div id="counter-event-example">
+      <p>{{ total }}</p>
+      <button-counter v-on:increment="incrementTotal"></button-counter>
+      <button-counter v-on:increment="incrementTotal"></button-counter>
+      <button-counter v-on:click.native="something"></button-counter>
+      <p>{{ message }}</p>
+      <input
+        type="text"
+        v-bind:value="message"
+        v-on:input="message = $event.target.value"
+      />
+      <my-checkbox v-model="foo" value="some value"></my-checkbox>
+    </div>
+    <script src="./component.js"></script>
+  </body>
+</html>
