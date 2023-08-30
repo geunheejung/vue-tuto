@@ -103,6 +103,7 @@ const data = {
   b: 2,
   rawHtml: "<span style='color: red'>red</span>",
   dynamicId: "wrapper",
+  message: "computed example",
   isButtonDisabled: true,
   url: "",
   attrname: "href",
@@ -123,6 +124,11 @@ const vm = new Vue({
     // this는 vm 인스턴스
     console.log(`a is: ${this.a}`);
   },
+  computed: {
+    reversedMessage: function () {
+      return this.message.split("").reverse().join("");
+    },
+  },
 });
 
 console.log("vm.$data === data ->", vm.$data === data);
@@ -135,4 +141,86 @@ vm.$watch("a", function (newVal, oldVal) {
   // vm.a 가 변경되면 호출된다.
 
   alert(`changed ${oldVal} -> ${newVal}`);
+});
+
+{
+  const vm2 = new Vue({
+    el: "#app-9",
+    data: {
+      firstName: "Foo",
+      lastName: "Bar",
+      fullName: "Foo Bar",
+    },
+    // 명령형, 코드를 반복
+    watch: {
+      firstName: function (val) {
+        this.fullName = `${val} ${this.lastName}`;
+      },
+      lastName: function (val) {
+        this.fullName = `${this.firstName} ${val}`;
+      },
+    },
+    // fullName의 대해 선언 해놓은 뒤 사용하는 쪽에서는 가져다 쓰기만 함. fullName이 어떤 행위들을 하는지 관심 X
+    // firstName, lastName은 각각 어떤 행위를 하는지 명령
+    computed: {
+      fullName2: {
+        get: function () {
+          return `${this.firstName} ${this.lastName}`;
+        },
+        set: function (newValue) {
+          const [firstName, lastName] = newValue.split(" ");
+
+          this.firstName = firstName;
+          this.lastName = lastName;
+        },
+      },
+    },
+  });
+
+  vm2.fullName2 = "Jon Doe";
+}
+
+const vm3 = new Vue({
+  el: "#app-10",
+  data: {
+    question: "",
+    answer: "질문을 하기 전까지는 대답할 수 없습니다.",
+  },
+  watch: {
+    question: function (newQuestion) {
+      this.answer = "입력을 기다리는 중...";
+      this.debouncedGetAnswer();
+    },
+  },
+  created: function () {
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+  },
+  computed: {
+    classObject: function () {
+      return {
+        loading: this.answer === "입력을 기다리는 중...",
+        error: this.answer.includes("에러!"),
+      };
+    },
+  },
+  methods: {
+    getAnswer: async function () {
+      if (this.question.indexOf("?") === -1) {
+        this.answer = "질문에는 일반적으로 물음표가 포함 됩니다.";
+        return;
+      }
+
+      this.answer = "생각중...";
+
+      const vm = this;
+
+      try {
+        const res = await axios.get("https://yesno.wtf/api");
+
+        vm.answer = _.capitalize(res.data.answer);
+      } catch (error) {
+        vm.answer = `에러! API 요청에 요류가 있습니다. ${error}`;
+      }
+    },
+  },
 });

@@ -103,8 +103,14 @@
         </button>
       </div>
 
-      {{ a + 1 }} {{ isButtonDisabled ? 'YES' : 'NO' }} {{
-      dynamicId.split('').reverse().join('') }}
+      <p>{{ a + 1 }}</p>
+      <p>{{ isButtonDisabled ? 'YES' : 'NO' }}</p>
+      <p>{{ dynamicId.split('').reverse().join('') }}</p>
+      <p>{{ reversedMessage }}</p>
+      <!-- 일반 속성처럼 computed 속성에도 템플릿에서 데이터 바인딩 가능. -->
+      <!-- Vue는 vm.reversedMessage 가 vm.message 에 의존하는 것을 알고 있음. -->
+      <!-- vm.message 가 바뀔 때 vm.reversedMessage에 의존하는 바인딩을 모두 업데이트 -->
+      <input type="text" v-model="message" />
 
       <!-- 디렉티브 속성 값은 단일 JavaScript 표현식이 된다. -->
       <p v-if="true">v-if</p>
@@ -122,6 +128,21 @@
       </form>
     </div>
 
+    <div id="app-9">
+      <p>{{ fullName }}</p>
+      <p>{{ fullName2 }}</p>
+    </div>
+
+    <div id="app-10">
+      <p>
+        yes/no 질문을 물어보세요:
+        <input v-model="question" />
+      </p>
+      <p v-bind:class="classObject">{{ answer }}</p>
+    </div>
+
+    <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
     <script src="./step-1.js"></script>
   </body>
 </html>
