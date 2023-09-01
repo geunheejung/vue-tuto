@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <ol>
+      <app1-comp></app1-comp>
+    </ol>
+    <div id="app">{{ message }}</div>
+    <div id="app-2">
+      <!-- 
+        '디렉티브' : Vue에서 제공하는 특수 속성임을 나타내며, 
+        'v-' 접두어가 붙어있을 시 렌더링 된 DOM에 특수한 반응형 동작.  
+        'title' 속성을 Vue 인스턴스의 'message' 속성으로 최신 상태를 유지한다.
+      -->
+      <span v-bind:title="message">
+        내 위에 잠시 마우스를 올리면 동적으로 바인딩 된 title을 볼 수 있습니다!
+      </span>
+    </div>
+
+    <div id="app-3">
+      <!-- 텍스트와 속성뿐 아니라 DOM의 구조에도 데이터를 바인딩 할 수 있다. -->
+      <!-- Vue 엘리먼트가 Vue에 삽입/업데이트/제거될 때 자동으로 트랜지션 효과를 적용할 수 있다. -->
+      <p v-if="seen">이제 나를 볼 수 있어요</p>
+    </div>
+
+    <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">{{ todo.text }}</li>
+      </ol>
+    </div>
+
+    <div id="app-5">
+      <button
+        v-on:click="onToggle"
+        v-bind:style="{ 
+          color: isReverse ? 'black' : 'gray', 
+          backgroundColor: '#fff', 
+          border: '1px solid #000', 
+          padding: '5px 20px', 
+          borderRadius: '5px' 
+        }"
+      >
+        화면 잠금
+      </button>
+      <p>{{ message }}</p>
+      <button
+        v-on:click="reverseMessage"
+        v-bind:style="{ 
+          color: isReverse ? 'gray' : 'black', backgroundColor: '#fff', 
+          border: '1px solid #000', 
+          padding: '5px 20px', 
+          borderRadius: '5px'  
+        }"
+      >
+        메시지 뒤집기
+      </button>
+    </div>
+
+    <div id="app-6">
+      <p>{{ message }}</p>
+      <input v-model="message" />
+      <button v-on:click="handleSubmit">전송</button>
+    </div>
+
+    <div id="app-7">
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+          v-bind:style="{ 
+            cursor: 'pointer',
+            userSelect: 'none',
+            textDecoration: item.isCompleted ? 'line-through' : 'none' 
+          }"
+        ></todo-item>
+      </ol>
+    </div>
+
+    <div id="app-8">
+      <p>{{ a }}</p>
+      <!-- v-once 디렉티브 사용 시 엘리먼트 내의 값들은 일회성 보간으로 사용된다. -->
+      <p v-once>v-once -> {{ b }}, {{ a }}</p>
+      <div>
+        <!-- 이중 중괄호는 HTML이 아닌 일반 텍스트로 데이터를 해석한다. 실제 HTML을 출력하려면 v-html 디렉티브 -->
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+      </div>
+      <button v-on:click="a += 1">Change it</button>
+      <button v-on:click="b += 1">Change it</button>
+
+      <div v-bind:id="dynamicId">
+        Hello
+        <!-- isButtonDisabled 가 falsy 한 값을 가질 경우 disabled 속성 자체가 포함되지 않음-->
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <button v-bind:id="dynamicId.split('').reverse().join('')">
+          {{ "button".toUpperCase() }}
+        </button>
+      </div>
+
+      <p>{{ a + 1 }}</p>
+      <p>{{ isButtonDisabled ? 'YES' : 'NO' }}</p>
+      <p>{{ dynamicId.split('').reverse().join('') }}</p>
+      <p>{{ reversedMessage }}</p>
+      <!-- 일반 속성처럼 computed 속성에도 템플릿에서 데이터 바인딩 가능. -->
+      <!-- Vue는 vm.reversedMessage 가 vm.message 에 의존하는 것을 알고 있음. -->
+      <!-- vm.message 가 바뀔 때 vm.reversedMessage에 의존하는 바인딩을 모두 업데이트 -->
+      <input type="text" v-model="message" />
+
+      <!-- 디렉티브 속성 값은 단일 JavaScript 표현식이 된다. -->
+      <p v-if="true">v-if</p>
+      <!-- href는 전달인자로, 엘리먼트의 href 속성을 표현식 url의 값에 바인드하는 v-bind 디렉티브에게 알려준다. -->
+      <a v-bind:href="url ? 'http://' + url : ''" @click="handleClick">link</a>
+      <input type="text" v-model="url" />
+
+      <a v-bind:[attrname]="url">attr link</a>
+
+      <form v-on:submit.prevent="onSubmit">
+        <label for="id">id</label>
+        <input type="text" name="id" />
+
+        <input type="submit" />
+      </form>
+    </div>
+
+    <div id="app-9">
+      <p>{{ fullName }}</p>
+      <p>{{ fullName2 }}</p>
+    </div>
+
+    <div id="app-10">
+      <p>
+        yes/no 질문을 물어보세요:
+        <input v-model="question" />
+      </p>
+      <p v-bind:class="classObject">{{ answer }}</p>
+    </div>
+
+    <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+    <script src="./step-1.js"></script>
+  </body>
+</html>

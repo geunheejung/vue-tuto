@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <span id="aText"> {{ a }} </span>
+      <p>{{ message | capitalize }}</p>
+      <!-- {{ a }} 데이터가 실제로 사용되지 않으면 의미가 없나? -->
+      <button @click="onIncrement">increment</button>
+      <button @click="fetchData">데이터 불러오기</button>
+      <modal></modal>
+      <!-- props로 바인딩된 데이터가 내려짐. -->
+      <child-component v-bind:name="name"></child-component>
+
+      <p>
+        <!-- 네비게이션을 위해 router-link 컴포넌트 사용 -->
+        <!-- 구체적인 속서은 'to' prop 이용 -->
+        <!-- router-link -> a 태그로 렌더링 -->
+        <router-link to="/sign-in">Go to SignIn</router-link>
+        <router-link to="/sign-up">Go to SignUp</router-link>
+        <router-link to="/home">home</router-link>
+      </p>
+      <!-- 라우트 아울렛 -->
+      <!-- 현재 라우트에 맞는 컴포넌트가 렌더링 -->
+      <router-view name="appHeader"></router-view>
+      <router-view></router-view>
+      <router-view name="appFooter"></router-view>
+    </div>
+
+    <div id="app-2"></div>
+    <script src="./ch1.js"></script>
+  </body>
+</html>
