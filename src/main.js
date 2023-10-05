@@ -2,9 +2,8 @@ import Vue from "vue";
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 import App from "../App.vue";
-import Home from "../Home.vue";
 import ErrorView from "./components/ErrorView.vue";
-import LoadingView from "./components/LoadingView.vue";
+import LoadingView from "@/components/LoadingView.vue";
 
 const AsyncComp = () => ({
   component: import("../my-async-component.vue"),
@@ -60,6 +59,70 @@ requireComponent.keys().forEach((fileName) => {
   );
 
   Vue.component(componentName, componentConfig.default || componentConfig);
+});
+
+Vue.config.optionMergeStrategies.myOption = function (toVal, fromVal) {
+  // return 병합된 값.
+  return {
+    sayHello() {
+      console.log("hello");
+    },
+  };
+};
+
+// 전역 사용자 정의 디렉티브 v-focus 등록
+Vue.directive("focus", {
+  // 바인딩 된 엘리먼트가 DOM에 삽입되었을 때..
+  inserted(el, ...args) {
+    console.log(args);
+    // 엘리먼트에 포커스
+    el.focus();
+  },
+});
+
+Vue.directive("pin", {
+  update(el, binding, vnode) {
+    el.style.position = "fixed";
+    var s = binding.arg;
+    console.log(s);
+    el.style[s] = binding.value + "px";
+  },
+});
+
+Vue.directive("color-swatch", function (el, binding) {
+  el.style.backgroundColor = binding.value;
+});
+
+Vue.component("anchored-heading", {
+  render(createElement) {
+    return createElement(
+      `h${this.level}`, // 태그 이름
+      this.$slots.default // 자식 배열
+      // slot:name -> $slot.name
+    );
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true,
+    },
+  },
+});
+
+Vue.component("items-comp", {
+  props: ["items"],
+  render: function (createElement) {
+    if (this.items.length) {
+      return createElement(
+        "ul",
+        this.items.map(function (item) {
+          return createElement("li", item.name);
+        })
+      );
+    } else {
+      return createElement("p", "No items found.");
+    }
+  },
 });
 
 new Vue({
